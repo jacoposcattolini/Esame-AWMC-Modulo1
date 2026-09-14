@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.env
+*.log
+
+### File di lavoro locali, fuori dalla consegna ###
+docker-compose.*.yml
+
+### Archivi e appunti locali, fuori dal progetto ###
+*.tar.gz
+*.zip
+appunti/
+
+### Sistema ###
+.DS_Store
+Thumbs.db
+
+### IDE ###
+.vscode/
+.idea/

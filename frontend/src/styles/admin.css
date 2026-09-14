@@ -1,0 +1,409 @@
+/* ============================================================
+   SportEasy - stile del pannello di controllo (sezione admin).
+   Ogni regola e' racchiusa in .pannello-admin: e' lo stile di una sezione
+   del sito, non deve poter toccare le schermate dell'app.
+   Vale anche il contrario: i nomi di classe qui dentro non devono coincidere
+   con quelli usati dall'app (index.css), altrimenti le regole dell'app
+   entrerebbero nel pannello. Per questo alcune classi hanno un nome proprio
+   (.contenuto-pannello, .etichetta-dato, .titolo-elenco).
+   ============================================================ */
+
+.pannello-admin {
+  --verde: #82ca25;
+  --verde-chiaro: #81f4a2;
+  --grigio: #717171;
+  --bordo: #e6e6e6;
+  --sfondo: #f6f7f4;
+  --testo: #14170f;
+
+  min-height: 100vh;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--sfondo);
+  color: var(--testo);
+}
+
+.pannello-admin * { box-sizing: border-box; }
+
+.pannello-admin .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--bordo);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.pannello-admin .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.pannello-admin .brand .dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--verde);
+  box-shadow: 0 0 0 5px rgba(130, 202, 37, 0.18);
+}
+
+.pannello-admin .topbar nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pannello-admin .topbar nav a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--grigio);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pannello-admin .topbar nav a:hover { background: #f1f1f1; color: var(--testo); }
+.pannello-admin .topbar nav a.attivo { background: var(--verde); color: #10230a; }
+
+/* La colonna delle azioni ha allargato le tabelle: il contenitore le segue,
+   cosi' i comandi restano visibili senza dover scorrere in orizzontale. */
+.pannello-admin .contenuto-pannello {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.pannello-admin h1 { font-size: 28px; margin: 0 0 4px; }
+.pannello-admin h2 { font-size: 18px; margin: 32px 0 12px; }
+.pannello-admin .sottotitolo { color: var(--grigio); margin: 0 0 24px; font-size: 14px; }
+.pannello-admin .vuoto { color: var(--grigio); font-size: 14px; }
+
+.pannello-admin .statistiche {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.pannello-admin .card {
+  background: #fff;
+  border: 1px solid var(--bordo);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pannello-admin .card .numero { font-size: 32px; font-weight: 800; color: var(--verde); }
+.pannello-admin .card .etichetta-dato {
+  font-size: 13px;
+  color: var(--grigio);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pannello-admin .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.pannello-admin .chip {
+  background: #fff;
+  border: 1px solid var(--bordo);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pannello-admin .tabella-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--bordo);
+  border-radius: 18px;
+}
+
+.pannello-admin table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 640px;
+}
+
+/* con la colonna delle azioni serve piu' respiro: sotto questa soglia la
+   tabella scorre in orizzontale dentro .tabella-wrap invece di schiacciarsi */
+.pannello-admin table:has(td.azioni) { min-width: 980px; }
+
+.pannello-admin th,
+.pannello-admin td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--bordo);
+  white-space: nowrap;
+}
+
+.pannello-admin th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--grigio);
+}
+
+.pannello-admin tbody tr:last-child td { border-bottom: none; }
+.pannello-admin tbody tr:hover { background: #fafbf8; }
+
+.pannello-admin .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.pannello-admin .stato {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  background: #eee;
+  color: var(--grigio);
+}
+
+.pannello-admin .stato.confermata { background: rgba(130, 202, 37, 0.18); color: #3f6b0d; }
+.pannello-admin .stato.in_attesa { background: #fff3cd; color: #8a6100; }
+.pannello-admin .stato.annullata { background: #ffe0dd; color: #a02015; }
+
+/* --- avvisi dopo un'azione --- */
+.pannello-admin .avviso {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pannello-admin .avviso.ok { background: rgba(130, 202, 37, 0.18); color: #3f6b0d; }
+.pannello-admin .avviso.errore { background: #ffe0dd; color: #a02015; }
+
+/* --- uscita nella barra in alto --- */
+.pannello-admin .link-esci {
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  margin-left: auto;
+  opacity: 0.8;
+}
+
+.pannello-admin .link-esci:hover { opacity: 1; text-decoration: underline; }
+
+/* --- azioni dentro le tabelle --- */
+/* La cella resta una normale cella di tabella: rendendola flex, la colonna
+   veniva calcolata senza il suo contenuto e i comandi finivano tagliati.
+   Sono i due gruppi interni a disporsi in linea. */
+.pannello-admin td.azioni { white-space: nowrap; }
+
+.pannello-admin td.azioni .gruppo-azione {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+}
+
+.pannello-admin td.azioni .gruppo-azione:last-child { margin-right: 0; }
+
+.pannello-admin td.azioni select {
+  height: 30px;
+  border: 1px solid #d5d9d1;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+}
+
+.pannello-admin .btn-piccolo {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #cfd6c8;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pannello-admin .btn-piccolo:hover { background: #f2f5ee; }
+.pannello-admin .btn-piccolo:disabled { opacity: 0.55; cursor: default; }
+
+.pannello-admin .btn-piccolo.pericolo {
+  border-color: #f0c3bd;
+  color: #a02015;
+}
+
+.pannello-admin .btn-piccolo.pericolo:hover { background: #ffe9e6; }
+
+.pannello-admin .pillola {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: #eef1ea;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5c6357;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   MODULO GUIDATO (aggiunta di un campo) ed elenchi con foto
+   ============================================================ */
+
+.pannello-admin .riquadro {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 32px;
+}
+
+.pannello-admin .riquadro h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+}
+
+.pannello-admin .titolo-elenco {
+  margin: 0 0 14px;
+  font-size: 19px;
+}
+
+.pannello-admin .modulo-guidato fieldset {
+  border: none;
+  border-top: 1px solid #ececec;
+  margin: 0;
+  padding: 18px 0 4px;
+}
+
+.pannello-admin .modulo-guidato legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 8px 0 0;
+}
+
+.pannello-admin .modulo-guidato .passo {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--verde);
+  color: #10230a;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pannello-admin .modulo-guidato label {
+  display: block;
+  margin: 14px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--testo);
+}
+
+.pannello-admin .modulo-guidato input,
+.pannello-admin .modulo-guidato select {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 6px;
+  padding: 9px 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 400;
+  background: #fff;
+}
+
+.pannello-admin .modulo-guidato input:focus,
+.pannello-admin .modulo-guidato select:focus {
+  outline: none;
+  border-color: var(--verde);
+}
+
+.pannello-admin .modulo-guidato small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--grigio);
+}
+
+.pannello-admin .modulo-guidato .coppia {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.pannello-admin .modulo-guidato .coppia label {
+  flex: 1;
+  min-width: 200px;
+}
+
+.pannello-admin .nota-campo {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--grigio);
+  max-width: 560px;
+}
+
+.pannello-admin .azioni-modulo {
+  border-top: 1px solid #ececec;
+  padding-top: 16px;
+}
+
+.pannello-admin .btn-piccolo.primario {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: #10230a;
+  font-weight: 700;
+  padding: 9px 18px;
+}
+
+.pannello-admin .btn-piccolo.primario:hover {
+  filter: brightness(1.05);
+  background: var(--verde);
+}
+
+.pannello-admin .miniatura {
+  width: 54px;
+  height: 38px;
+  border-radius: 7px;
+  object-fit: cover;
+  display: block;
+}
+
+/* i post possono essere lunghi: la colonna non deve allargare la tabella */
+.pannello-admin .testo-lungo {
+  max-width: 420px;
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+  .pannello-admin .contenuto-pannello { padding: 20px 14px 48px; }
+  .pannello-admin h1 { font-size: 22px; }
+  .pannello-admin .topbar { padding: 12px 14px; }
+  .pannello-admin .topbar nav a { padding: 7px 11px; font-size: 13px; }
+}

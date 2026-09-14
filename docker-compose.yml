@@ -1,0 +1,82 @@
+# ============================================================
+# SportEasy - stack completo: PostgreSQL + backend Node + frontend React
+# Avvio:  docker compose up --build
+#   sito       -> http://localhost:8080
+#   pannello   -> http://localhost:8080/admin  (sezione del frontend)
+#   API (JSON) -> http://localhost:3000/api    (nessuna pagina web)
+#
+# Le credenziali dell'amministratore NON stanno qui: si leggono dal file
+# .env di questa cartella, che non va versionato (vedi .env.example).
+# ============================================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sporteasy-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sporteasy}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sporteasy}
+      POSTGRES_DB: ${POSTGRES_DB:-sporteasy}
+    ports:
+      # 5433 sull'host per non collidere con un PostgreSQL gia' installato sul PC
+      # (dentro la rete di compose il backend continua a usare db:5432).
+      # Legata a 127.0.0.1: dal proprio computer si raggiunge come sempre, ma su
+      # un server pubblico il database NON e' esposto a internet.
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - dati-postgres:/var/lib/postgresql/data
+      # gli script vengono eseguiti al primo avvio del volume
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sporteasy} -d ${POSTGRES_DB:-sporteasy}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: sporteasy-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # ADMIN_USERNAME, ADMIN_PASSWORD_HASH e JWT_SECRET arrivano da .env:
+    # i segreti restano fuori da questo file, che invece va versionato.
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-sporteasy}:${POSTGRES_PASSWORD:-sporteasy}@db:5432/${POSTGRES_DB:-sporteasy}
+      CORS_ORIGIN: "*"
+      SQL_DIR: /app/db/init
+      # cartella (sola lettura) da cui il pannello elenca le foto disponibili
+      # per un campo nuovo: e' un dato per l'API, non un file servito al web
+      CARTELLA_IMMAGINI: /frontend/public/img
+      # tempo dopo il quale un profilo rifiutato torna nello swipe
+      SWIPE_GRAZIA_RIFIUTO: 1 month
+    ports:
+      # come sopra: l'API si raggiunge da localhost per le prove, mentre da
+      # fuori ci si passa solo attraverso il frontend (nginx inoltra /api)
+      - "127.0.0.1:3000:3000"
+    volumes:
+      # schema e seed, usati anche dal backend per la migrazione automatica
+      - ./db/init:/app/db/init:ro
+      # solo per LEGGERE i nomi dei file immagine (il backend non li serve piu')
+      - ./frontend/public/img:/frontend/public/img:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # in Docker il frontend chiama /api, che nginx inoltra al backend
+        VITE_API_URL: /api
+    container_name: sporteasy-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  dati-postgres:

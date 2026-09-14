@@ -1,0 +1,3817 @@
+/* ============================================================
+   SportEasy - stile globale
+   Palette e misure riprese dal progetto Figma "SportEasy"
+   (verde #82ca25, campi #f0edff, card raggio 27, frame 393px).
+   Mobile first: su schermi grandi l'app resta centrata.
+   ============================================================ */
+
+:root {
+  --verde: #82ca25;
+  --verde-chiaro: #81f4a2;
+  --verde-scuro: #6ba81d;
+  --gradiente: linear-gradient(180deg, #81f4a2 0%, #82ca25 100%);
+  --lilla: rgba(240, 237, 255, 0.8);
+  --grigio: #717171;
+  --grigio-chiaro: #d9d9d9;
+  --testo: #000000;
+  --testo-morbido: #222222;
+  --bianco: #ffffff;
+  --rosso: #ff4e40;
+
+  --raggio-s: 12px;
+  --raggio-m: 16px;
+  --raggio-l: 27px;
+  --altezza-tabbar: 62px;
+
+  /* margine laterale del contenuto: non scende mai sotto i 16px ma si allarga
+     quanto serve sugli iPhone con notch/isola dinamica in orizzontale */
+  --margine-lato: max(16px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+
+  --ombra: 0 4px 18px rgba(0, 0, 0, 0.08);
+  --ombra-forte: 0 8px 28px rgba(0, 0, 0, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--testo);
+  background: #eceee9;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;      /* iOS < 15.4 non conosce dvh: resta questo valore */
+  min-height: 100dvh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* nessuna immagine puo' sfondare il suo contenitore (i tasselli della mappa,
+   che devono restare a 256px, si riprendono la deroga piu' avanti) */
+img {
+  max-width: 100%;
+}
+
+/* nomi lunghi (utenti, campi, gruppi) vanno a capo invece di uscire dallo schermo */
+h1, h2, h3, p, span, strong, em, small {
+  overflow-wrap: break-word;
+}
+
+/* ------------------------- contenitore app ------------------------- */
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bianco);
+  padding: 0 0 calc(var(--altezza-tabbar) + env(safe-area-inset-bottom, 0px) + 16px);
+  overflow-x: hidden;
+}
+
+/* schermate di dettaglio: su telefono niente barra, resta il tasto indietro */
+.app.senza-tabbar .navigazione {
+  display: none;
+}
+
+.app.senza-tabbar {
+  padding-bottom: 24px;
+}
+
+
+.contenuto {
+  padding: 0 var(--margine-lato);
+}
+
+.schermo-caricamento {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bianco);
+}
+
+.schermo-caricamento img {
+  width: 60%;
+  max-width: 260px;
+}
+
+/* --------------------------- intestazioni -------------------------- */
+
+.intestazione {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 14px var(--margine-lato) 12px;
+  background: var(--bianco);
+}
+
+.intestazione h1 {
+  margin: 0;
+  font-size: clamp(19px, 5.6vw, 24px);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Schermate della barra di navigazione: niente freccia indietro (non c'e' un
+   "prima" dove tornare) e titolo allineato a sinistra, sulla stessa colonna
+   del contenuto. */
+.intestazione-sinistra {
+  grid-template-columns: 1fr auto;
+}
+
+.intestazione-sinistra h1 {
+  text-align: left;
+}
+
+/* Swipe: titolo al centro della pagina, sopra la carta */
+.intestazione-centrata {
+  grid-template-columns: 1fr;
+}
+
+.intestazione-centrata .azione {
+  display: none;
+}
+
+.intestazione .azione {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-indietro {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bianco);
+  box-shadow: var(--ombra);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #1c1c1c;
+}
+
+.btn-indietro:active {
+  transform: scale(0.94);
+}
+
+.campanella {
+  position: relative;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000;
+  line-height: 0;
+}
+
+.campanella .pallino {
+  position: absolute;
+  top: -1px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
+/* -------------------------- barra ricerca -------------------------- */
+
+.barra-ricerca {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  border-radius: 28px;
+  background: var(--bianco);
+  box-shadow: var(--ombra);
+  padding: 0 16px;
+}
+
+.barra-ricerca input {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+}
+
+.barra-ricerca input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.barra-ricerca svg {
+  color: #000;
+  flex: none;
+}
+
+/* ----------------------------- bottoni ----------------------------- */
+
+.btn {
+  border: none;
+  border-radius: var(--raggio-m);
+  padding: 14px 22px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  background: var(--grigio-chiaro);
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-verde {
+  background: var(--gradiente);
+  color: #10230a;
+}
+
+.btn-pillola {
+  border-radius: 100px;
+  background: var(--verde);
+  color: #0f2409;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 13px 26px;
+}
+
+.btn-bordo {
+  background: var(--bianco);
+  border: 1px solid #f0edff;
+  border-radius: var(--raggio-m);
+  font-weight: 500;
+  color: #1c1c1c;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-bordo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.btn-testo {
+  background: none;
+  border: none;
+  color: var(--verde-scuro);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* ------------------------------ form ------------------------------- */
+
+.campo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--lilla);
+  border-radius: var(--raggio-m);
+  padding: 0 18px;
+  height: 52px;
+  margin-bottom: 16px;
+}
+
+.campo svg {
+  color: #1c1c1c;
+  flex: none;
+  opacity: 0.75;
+}
+
+.campo input,
+.campo select {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.campo input::placeholder {
+  color: #1c1c1c;
+  opacity: 0.85;
+}
+
+.etichetta {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--grigio);
+  margin: 0 0 6px 4px;
+}
+
+.messaggio-errore {
+  background: #ffe9e6;
+  color: #a02015;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+.stato-vuoto {
+  text-align: center;
+  color: var(--grigio);
+  font-size: 14px;
+  padding: 32px 16px;
+}
+
+/* --------------------------- autenticazione ------------------------ */
+
+.auth {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bianco);
+  padding-bottom: 32px;
+}
+
+.auth-logo {
+  display: block;
+  width: 86%;
+  max-width: 340px;
+  height: auto;
+  margin: 26px auto 2px;
+}
+
+.auth-tab {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 26px var(--margine-lato) 24px;
+}
+
+.auth-tab button {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  font-size: clamp(20px, 6.4vw, 26px);
+  font-weight: 700;
+  padding-bottom: 8px;
+  color: #000;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.auth-tab button.attivo {
+  border-bottom-color: var(--verde);
+}
+
+.auth form {
+  padding: 0 14px;
+}
+
+.auth .btn-verde {
+  display: block;
+  margin: 6px auto 0;
+  min-width: 124px;
+  padding: 16px 24px;
+  font-size: 13px;
+}
+
+.auth .separatore {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 26px 14px 20px;
+  color: #525252;
+  font-family: Poppins, Inter, sans-serif;
+  font-size: 15px;
+}
+
+.auth .separatore::before,
+.auth .separatore::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #f0edff;
+}
+
+
+.auth .nota {
+  text-align: center;
+  color: var(--grigio);
+  font-size: 12px;
+  margin: 22px var(--margine-lato) 0;
+  line-height: 1.5;
+}
+
+/* ------------------------------- home ------------------------------ */
+
+.home-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px var(--margine-lato) 12px;
+  background: var(--bianco);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.home-top .barra-ricerca {
+  flex: 1;
+}
+
+.card-sport {
+  position: relative;
+  display: block;
+  height: clamp(132px, 40vw, 178px);
+  border-radius: var(--raggio-l);
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.card-sport img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-sport span {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  max-width: calc(100% - 16px);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: clamp(15px, 4.8vw, 20px);
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: 50px;
+}
+
+/* ------------------------- lista campi (venue) --------------------- */
+
+.mappa {
+  position: relative;
+  width: 100%;
+  /* si adatta all'altezza dello schermo: bassa sugli iPhone piccoli in
+     orizzontale, piu' generosa sui telefoni grandi */
+  height: clamp(190px, 34vh, 300px);
+  border: 0;
+  display: block;
+  overflow: hidden;
+  background: #e8eadf;
+}
+
+/* i tasselli OpenStreetMap: sfondo della mappa, non interattivi */
+.mappa-tasselli {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mappa-tasselli img {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+}
+
+/* Un pin per ogni campo: si tocca per andare alla prenotazione.
+   La punta del disegno non tocca il bordo inferiore dell'SVG (nel viewBox
+   24x24 arriva a y=22.5, cioe' ~2px piu' su a 34px di lato): lo scarto va
+   tolto dalla traslazione, altrimenti il pin risulta spostato verso il basso
+   rispetto al punto reale. */
+.mappa-pin {
+  position: absolute;
+  transform: translate(-50%, calc(-100% + 2px));
+  transform-origin: 50% 100%; /* l'ingrandimento al passaggio del mouse non sposta la punta */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+  transition: transform 0.15s ease;
+}
+
+.mappa-pin:hover,
+.mappa-pin:focus-visible {
+  transform: translate(-50%, calc(-100% + 2px)) scale(1.06);
+  z-index: 3;
+}
+
+.mappa-pin-etichetta {
+  order: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bianco);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1c1c1c;
+  white-space: nowrap;
+  box-shadow: var(--ombra);
+}
+
+.mappa-pin-etichetta small {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--verde-scuro);
+}
+
+.mappa-crediti {
+  position: absolute;
+  right: 6px;
+  bottom: 4px;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 10px;
+  color: #444;
+}
+
+.aiuto.centrato {
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+/* nota che segnala un problema da risolvere prima di andare avanti
+   (per esempio: nessuna carta salvata e saldo che non copre l'importo) */
+.aiuto.avviso {
+  color: #9a3412;
+  font-weight: 600;
+}
+
+.foglio {
+  position: relative;
+  margin-top: -22px;
+  background: var(--bianco);
+  border-radius: 20px 20px 0 0;
+  padding: 10px var(--margine-lato) 0;
+  z-index: 2;
+}
+
+.foglio::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 5px;
+  border-radius: 100px;
+  background: var(--grigio);
+  margin: 0 auto 14px;
+}
+
+.foglio h2 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 18px;
+}
+
+.card-campo {
+  display: block;
+  margin-bottom: 26px;
+}
+
+.card-campo img {
+  width: 100%;
+  height: clamp(160px, 48vw, 220px);
+  object-fit: cover;
+  border-radius: 22px;
+  display: block;
+}
+
+.card-campo h3 {
+  margin: 12px 0 6px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.card-campo p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.card-campo .stelle {
+  margin: 8px 0 0;
+}
+
+.stelle {
+  display: flex;
+  gap: 3px;
+}
+
+/* --------------------------- dettaglio campo ----------------------- */
+
+.campo-hero {
+  position: relative;
+}
+
+.campo-hero img {
+  width: 100%;
+  height: clamp(210px, 62vw, 320px);
+  object-fit: cover;
+  display: block;
+}
+
+.campo-hero .btn-indietro {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
+.campo-corpo {
+  padding: 20px var(--margine-lato) 0;
+}
+
+.campo-corpo h1 {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 6px;
+}
+
+.campo-corpo .indirizzo {
+  text-align: center;
+  color: var(--grigio);
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.gruppo-campo {
+  margin-bottom: 18px;
+}
+
+.gruppo-campo label {
+  display: block;
+  font-size: 14px;
+  margin: 0 0 6px 2px;
+}
+
+.gruppo-campo input,
+.gruppo-campo select {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #b5b5b5;
+  border-radius: var(--raggio-s);
+  padding: 0 14px;
+  font-size: 15px;
+  background: var(--bianco);
+  outline: none;
+}
+
+.gruppo-campo input:focus,
+.gruppo-campo select:focus {
+  border-color: var(--verde);
+}
+
+.contatore {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bianco);
+  border: 1px solid #dcdcdc;
+  border-radius: 999px;
+  padding: 8px 10px;
+}
+
+.contatore button {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde);
+  color: #0f2409;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.contatore span {
+  font-family: Poppins, Inter, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.barra-prenota {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--margine-lato);
+  background: var(--bianco);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.07);
+  margin-top: 22px;
+}
+
+.barra-prenota .prezzo {
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.barra-prenota .prezzo small {
+  display: block;
+  font-size: 13px;
+  color: var(--grigio);
+}
+
+/* ----------------------------- pagamento --------------------------- */
+
+.pagamento {
+  padding: 0 var(--margine-lato) 24px;
+}
+
+.riepilogo {
+  background: #f7f8f4;
+  border-radius: var(--raggio-m);
+  padding: 16px;
+  margin-bottom: 22px;
+}
+
+.riepilogo div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 5px 0;
+}
+
+.riepilogo .totale {
+  font-weight: 800;
+  font-size: 17px;
+  border-top: 1px solid #e2e4dc;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+/* scelta del metodo: le voci si comportano come radio button */
+.metodo {
+  width: 100%;
+  border: 1.5px solid #e2e2e2;
+  border-radius: 14px;
+  background: var(--bianco);
+  color: var(--testo);
+  font-size: 16px;
+  text-align: left;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.metodo:hover {
+  border-color: #c4dda0;
+}
+
+.metodo.scelto {
+  border-color: var(--verde);
+  background: rgba(130, 202, 37, 0.08);
+}
+
+.segno-scelta {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cfcfcf;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.18s ease;
+}
+
+.metodo.scelto .segno-scelta {
+  border-color: var(--verde);
+}
+
+.metodo.scelto .segno-scelta::after {
+  content: '';
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--verde);
+}
+
+.metodo-testo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metodo-testo strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.metodo-testo small {
+  font-size: 12.5px;
+  color: var(--grigio);
+}
+
+.btn-verde.paga {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.metodo.chiaro {
+  background: #fff;
+  color: #000;
+  border: 1px solid #d5d5d5;
+}
+
+/* -------------------------- esito prenotazione --------------------- */
+
+.esito {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px;
+  background: var(--bianco);
+}
+
+.esito h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 26px;
+}
+
+.esito .segno {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  border: 6px solid var(--verde);
+  display: grid;
+  place-items: center;
+  margin-bottom: 26px;
+}
+
+.esito .segno svg {
+  color: var(--verde);
+}
+
+.esito .dettagli {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--testo-morbido);
+  margin-bottom: 34px;
+}
+
+/* invito agli amici subito dopo la prenotazione */
+.esito .btn.invita {
+  margin-bottom: 14px;
+}
+
+/* ----------------------------- prenotazioni ------------------------ */
+
+.riga-prenotazione {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #ededed;
+}
+
+.riga-prenotazione img {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  object-fit: cover;
+  flex: none;
+}
+
+.riga-prenotazione h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.riga-prenotazione p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--grigio);
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #eee;
+  color: var(--grigio);
+  text-transform: capitalize;
+}
+
+.badge.confermata { background: rgba(130, 202, 37, 0.2); color: #3f6b0d; }
+.badge.in_attesa { background: #fff3cd; color: #8a6100; }
+.badge.annullata { background: #ffe0dd; color: #a02015; }
+/* prenotazione la cui ora e' gia' passata: resta leggibile ma non si tocca piu' */
+.badge.passata { background: #ececec; color: #5a5a5a; margin-left: 6px; }
+
+.nota-passata {
+  flex: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--grigio);
+}
+
+/* ------------------------------ notifiche -------------------------- */
+
+.riepilogo-notifiche {
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--verde-scuro);
+}
+
+.sezione-notifiche {
+  margin-bottom: 4px;
+}
+
+/* titolo di gruppo: etichetta a sinistra, quantita' in un pallino verde */
+.gruppo-notifiche {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--grigio);
+  margin: 22px 0 10px;
+}
+
+.gruppo-notifiche span {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 100px;
+  background: rgba(130, 202, 37, 0.18);
+  color: #4b7d10;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.gruppo-notifiche::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ededed;
+}
+
+.notifica {
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  background: var(--bianco);
+  border: 1px solid #eeeeee;
+  border-radius: var(--raggio-m);
+}
+
+.notifica .freccia {
+  flex: none;
+  color: var(--grigio-chiaro);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.notifica:active {
+  transform: scale(0.995);
+}
+
+/* le non lette si riconoscono a colpo d'occhio */
+.notifica.non-letta {
+  background: rgba(130, 202, 37, 0.07);
+  border-color: rgba(130, 202, 37, 0.4);
+}
+
+.notifica img,
+.notifica .icona {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.notifica .icona {
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--verde);
+  color: var(--verde);
+  background: #fff;
+}
+
+.notifica .testo {
+  flex: 1;
+  min-width: 0;
+}
+
+.notifica h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.notifica p {
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--grigio);
+  line-height: 1.35;
+}
+
+/* l'orario resta allineato a destra, in colonna con il resto della lista */
+.notifica .quando {
+  flex: none;
+  align-self: flex-start;
+  padding-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grigio);
+  white-space: nowrap;
+}
+
+.notifica.non-letta .quando {
+  color: var(--verde-scuro);
+}
+
+/* -------------------------- amici e gruppi ------------------------- */
+
+.segmenti {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 18px;
+  background: #f2f3ef;
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.segmenti button {
+  flex: 1;
+  border: none;
+  background: none;
+  border-radius: 999px;
+  padding: 9px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--grigio);
+  cursor: pointer;
+}
+
+.segmenti button.attivo {
+  background: var(--bianco);
+  color: #000;
+  box-shadow: var(--ombra);
+}
+
+.riga-utente {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.riga-utente img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.riga-utente .nome {
+  flex: 1;
+  min-width: 0;
+}
+
+.riga-utente h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.riga-utente p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--grigio);
+}
+
+
+/* -------------------------------- swipe ---------------------------- */
+
+.swipe-area {
+  position: relative;
+  /* si adatta all'altezza dello schermo: i bottoni restano sempre visibili,
+     ma la carta non si schiaccia oltre un minimo leggibile */
+  height: min(560px, calc(100vh - 300px));
+  height: clamp(230px, calc(100dvh - 300px), 560px);
+  margin: 10px var(--margine-lato) 0;
+}
+
+.carta-swipe {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ddd center/cover no-repeat;
+  box-shadow: var(--ombra-forte);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.carta-swipe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.carta-swipe .testo {
+  position: relative;
+  z-index: 2;
+  padding: 22px;
+}
+
+.carta-swipe h2 {
+  margin: 0 0 6px;
+  font-size: clamp(21px, 6.6vw, 28px);
+  font-weight: 700;
+}
+
+.carta-swipe p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+.timbro {
+  position: absolute;
+  top: 34px;
+  z-index: 3;
+  font-family: Poppins, Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: 4px solid currentColor;
+  opacity: 0;
+  transition: opacity 0.12s linear;
+}
+
+.timbro.like { left: 24px; color: #74ff92; transform: rotate(-16deg); }
+.timbro.nope { right: 24px; color: var(--rosso); transform: rotate(16deg); }
+
+.azioni-swipe {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 18px;
+}
+
+.azioni-swipe button {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bianco);
+  box-shadow: var(--ombra);
+  font-size: 26px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.azioni-swipe .no { color: var(--rosso); }
+.azioni-swipe .si { color: var(--verde); }
+
+/* --------------------------------- post ---------------------------- */
+
+.crea-post {
+  padding: 8px 16px 16px;
+}
+
+.crea-post-riga {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* scelta della prenotazione da allegare al post */
+.allega-prenotazione {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 0 50px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--grigio);
+}
+
+.allega-prenotazione select {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 0 10px;
+  background: var(--bianco);
+  font-size: 12.5px;
+  outline: none;
+}
+
+.allega-prenotazione select:focus {
+  border-color: var(--verde);
+}
+
+.crea-post .aiuto {
+  margin: 8px 0 0 50px;
+}
+
+.crea-post img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.crea-post input {
+  flex: 1;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 13px;
+  outline: none;
+  min-width: 0;
+}
+
+.crea-post input:focus {
+  border-color: var(--verde);
+}
+
+.crea-post button {
+  border: none;
+  background: none;
+  color: #1e1e1e;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.post {
+  border-top: 1px solid #ededed;
+  padding: 16px;
+}
+
+.post .autore {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* foto + nome: aprono il profilo di chi ha scritto il post */
+.autore-collegamento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.autore-collegamento:active {
+  background: #f2f4ee;
+}
+
+@media (hover: hover) {
+  .autore-collegamento:hover {
+    background: #f2f4ee;
+  }
+}
+
+.post .autore img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post .autore h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.post .autore time {
+  font-size: 12px;
+  color: var(--grigio);
+}
+
+.post p {
+  margin: 12px 0 0 50px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* scheda della prenotazione allegata: porta alla schermata del campo */
+.post-prenotazione {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 0 50px;
+  padding: 10px 12px;
+  border: 1px solid rgba(130, 202, 37, 0.4);
+  border-radius: var(--raggio-s);
+  background: rgba(130, 202, 37, 0.08);
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+
+.post-prenotazione:active {
+  transform: scale(0.99);
+}
+
+@media (hover: hover) {
+  .post-prenotazione:hover {
+    background: rgba(130, 202, 37, 0.16);
+  }
+}
+
+.post-prenotazione-icona {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bianco);
+  color: var(--verde-scuro);
+}
+
+.post-prenotazione-testo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.post-prenotazione-testo strong {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.post-prenotazione-testo em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--grigio);
+}
+
+.post-prenotazione-testo small {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--verde-scuro);
+}
+
+.post-prenotazione-testo small.pieno {
+  color: var(--rosso);
+}
+
+.post-prenotazione .freccia {
+  color: var(--grigio);
+  font-size: 20px;
+}
+
+.post-azioni {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 0 50px;
+}
+
+.btn-partecipa {
+  font-size: 14px;
+  padding: 9px 20px;
+}
+
+/* ------------------------------- profilo --------------------------- */
+
+.profilo-testa {
+  display: flex;
+  gap: 16px;
+  padding: 8px var(--margine-lato) 0;
+}
+
+.profilo-testa img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.profilo-testa h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.profilo-testa p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* il bottone "Modifica profilo" sta in alto a destra, sotto l'intestazione */
+.profilo-azioni {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--margine-lato);
+  margin-top: 14px;
+}
+
+.btn-modifica {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--verde);
+  border-radius: 100px;
+  background: rgba(130, 202, 37, 0.12);
+  color: #3f6b0d;
+  padding: 9px 18px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+
+.btn-modifica svg {
+  flex: none;
+}
+
+.btn-modifica:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .btn-modifica:hover {
+    background: var(--verde);
+    color: #0f2409;
+  }
+}
+
+.dati-profilo {
+  padding: 26px var(--margine-lato) 0;
+}
+
+.dati-profilo .voce {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+}
+
+.dati-profilo .voce svg {
+  color: var(--verde);
+  flex: none;
+  margin-top: 2px;
+}
+
+.dati-profilo .voce h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--grigio);
+}
+
+.dati-profilo .voce p {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.voce-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 18px 0;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  border-top: 1px solid #f0f0f0;
+}
+
+.voce-link .freccia {
+  margin-left: auto;
+  color: #000;
+}
+
+.voce-link.esci {
+  color: #ff0000;
+}
+
+.voce-link.elimina {
+  color: var(--rosso);
+}
+
+.voce-link.elimina svg {
+  color: var(--rosso);
+}
+
+.btn-pericolo {
+  background: var(--rosso);
+  color: var(--bianco);
+}
+
+/* spiegazione sotto le voci del profilo, per l'account DEMO */
+.nota-demo {
+  margin: 16px var(--margine-lato) 0;
+  padding: 12px 14px;
+  border-radius: var(--raggio-s);
+  background: rgba(130, 202, 37, 0.12);
+  color: #3f6b0d;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .nota-demo {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    background: none;
+  }
+}
+
+/* --------------------- finestre modali e conferme -------------------- */
+
+.modale-sfondo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: comparsa 0.15s ease;
+}
+
+.modale {
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--bianco);
+  border-radius: var(--raggio-l);
+  box-shadow: var(--ombra-forte);
+  padding: 18px 20px 20px;
+}
+
+.modale-testa {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modale-testa h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modale-chiudi {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #f2f2f2;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modale-messaggio {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--testo-morbido);
+}
+
+.modale-azioni {
+  display: flex;
+  gap: 10px;
+}
+
+.modale-azioni .btn {
+  flex: 1;
+  width: auto;
+  padding: 13px 16px;
+  font-size: 14px;
+}
+
+/* elenco dei partecipanti al gruppo */
+.elenco-membri {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elenco-membri li {
+  border-top: 1px solid #f1f1f1;
+}
+
+.elenco-membri li:first-child {
+  border-top: none;
+}
+
+/* ogni riga e' un collegamento al profilo di quella persona */
+.elenco-membri li > a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  margin: 0 -8px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+}
+
+.elenco-membri li > a:active {
+  background: #f2f4ee;
+}
+
+@media (hover: hover) {
+  .elenco-membri li > a:hover {
+    background: #f2f4ee;
+  }
+}
+
+.elenco-membri .freccia {
+  flex: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--grigio);
+}
+
+.elenco-membri img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.elenco-membri li > a > span:not(.pillola-info):not(.freccia) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.elenco-membri .pillola-info {
+  flex: none;
+}
+
+.elenco-membri strong {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.elenco-membri em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--grigio);
+}
+
+/* l'immagine e il nome del gruppo aprono l'elenco dei partecipanti */
+.chat-immagine-gruppo,
+.chat-titolo-testo {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  line-height: 0;
+}
+
+.chat-titolo-testo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: normal;
+}
+
+.chat-immagine-gruppo:active {
+  transform: scale(0.96);
+}
+
+@keyframes comparsa {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   NAVIGAZIONE
+   Stesso markup a tutte le dimensioni:
+   - telefono  -> barra fissa in basso (5 voci)
+   - desktop   -> barra laterale a sinistra (tutte le voci)
+   ============================================================ */
+
+.navigazione {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--altezza-tabbar) + env(safe-area-inset-bottom, 0px));
+  padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(12px); /* Safari (iOS) vuole ancora il prefisso */
+  backdrop-filter: blur(12px);
+  border-top: 1px solid #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 20;
+}
+
+/* logo e voci extra: hanno senso solo nella barra laterale */
+.navigazione .nav-logo,
+.navigazione .solo-desktop {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: var(--grigio);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 12px;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.tab-icona {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.tab-icona .pallino {
+  position: absolute;
+  top: -1px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--verde);
+  border: 2px solid var(--bianco);
+}
+
+.tab.active {
+  color: var(--verde);
+}
+
+.tab img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* la voce "Profilo" e' l'unica con una foto: si riconosce meglio se e' piu' grande */
+.tab-profilo img {
+  width: 34px;
+  height: 34px;
+}
+
+.tab.active img {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.tab-profilo span:last-child {
+  max-width: 62px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   DESKTOP E TABLET
+   Da 900px in su il sito abbandona la forma "telefono":
+   barra laterale + contenuto a piena larghezza su piu' colonne.
+   ============================================================ */
+
+@media (min-width: 900px) {
+  :root {
+    --barra-laterale: 232px;
+  }
+
+  body {
+    background: #f4f6f2;
+  }
+
+  /* --- barra laterale --- */
+  .navigazione {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: var(--barra-laterale);
+    height: 100vh;
+    height: 100dvh;
+    padding: 22px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    background: var(--bianco);
+    border-top: none;
+    border-right: 1px solid #e9e9e9;
+    backdrop-filter: none;
+    overflow-y: auto;
+  }
+
+  /* il logo era ancorato a sinistra del suo blocco: ora e' un flex centrato,
+     cosi' risulta davvero al centro della barra laterale */
+  .navigazione .nav-logo {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0 26px;
+  }
+
+  .navigazione .nav-logo img {
+    /* misura data sulla larghezza: cresce con la barra e non la sfonda mai */
+    width: 152px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .navigazione .solo-desktop {
+    display: flex;
+  }
+
+  .tab {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 11px 14px;
+    border-radius: 14px;
+  }
+
+  .tab:hover {
+    background: #f4f6f2;
+    color: var(--testo);
+  }
+
+  .tab.active {
+    background: rgba(130, 202, 37, 0.14);
+    color: #4b7d10;
+    font-weight: 600;
+  }
+
+  .tab-profilo {
+    margin-top: auto;
+    border-top: 1px solid #efefef;
+    border-radius: 0;
+    padding-top: 16px;
+  }
+
+  .tab-profilo img {
+    width: 58px;
+    height: 58px;
+  }
+
+  /* il nome sotto la foto e' la voce piu' importante della barra: piu' grande
+     e piu' marcato delle altre */
+  .tab-profilo span:last-child {
+    max-width: none;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /* --- contenitore --- */
+  .app,
+  .app.senza-tabbar {
+    max-width: none;
+    width: auto;
+    margin: 0 0 0 var(--barra-laterale);
+    padding: 0 0 48px;
+    background: transparent;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .contenuto,
+  .foglio,
+  .campo-corpo,
+  .pagamento,
+  .dati-profilo {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  /* le barre superiori seguono la stessa colonna del contenuto */
+  .home-top,
+  .intestazione {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    background: transparent;
+  }
+
+  .home-top {
+    padding-top: 26px;
+    padding-bottom: 6px;
+    gap: 16px;
+  }
+
+  .home-top .barra-ricerca {
+    max-width: 460px;
+  }
+
+  .intestazione {
+    grid-template-columns: 44px 1fr 44px;
+    padding-top: 26px;
+  }
+
+  .intestazione h1 {
+    text-align: left;
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  /* --- titolo di sezione (solo desktop) --- */
+  .titolo-sezione {
+    margin: 6px 0 22px;
+  }
+
+  .titolo-sezione h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+  }
+
+  .titolo-sezione p {
+    margin: 0;
+    color: var(--grigio);
+    font-size: 15px;
+  }
+
+  /* --- griglie --- */
+  .griglia {
+    display: grid;
+    gap: 22px;
+  }
+
+  .griglia-sport {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .griglia-campi {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .card-sport {
+    height: 190px;
+    margin-bottom: 0;
+  }
+
+  .card-campo {
+    margin-bottom: 0;
+    background: var(--bianco);
+    border-radius: var(--raggio-l);
+    overflow: hidden;
+    box-shadow: var(--ombra);
+  }
+
+  .card-campo img {
+    border-radius: 0;
+    height: 180px;
+  }
+
+  .card-campo-testo {
+    padding: 14px 18px 20px;
+  }
+
+  /* liste che restano righe ma su piu' colonne */
+  .contenuto {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Amici e Gruppi: lista su una sola colonna, piu' semplice da scorrere.
+     La colonna parte dal bordo sinistro del contenuto (justify-content: start),
+     cosi' le chat sono allineate alla barra di ricerca sopra invece di essere
+     centrate nella pagina. */
+  .contenuto.lista-verticale {
+    grid-template-columns: minmax(0, 720px);
+    justify-content: start;
+  }
+
+  /* tutto cio' che non e' una riga occupa l'intera larghezza */
+  .contenuto > .griglia,
+  .contenuto > .titolo-sezione,
+  .contenuto > .segmenti,
+  .contenuto > .stato-vuoto,
+  .contenuto > .messaggio-errore,
+  .contenuto > .gruppo-notifiche,
+  .contenuto > .aiuto,
+  .contenuto > form,
+  .contenuto > .btn,
+  .contenuto > h2 {
+    grid-column: 1 / -1;
+  }
+
+  /* un bottone d'azione non deve stirarsi per tutta la riga */
+  .contenuto > .btn.btn-pillola {
+    justify-self: start;
+    min-width: 240px;
+  }
+
+  .riga-utente,
+  .riga-prenotazione,
+  .notifica {
+    background: var(--bianco);
+    border-radius: var(--raggio-m);
+    padding: 14px 18px;
+    box-shadow: var(--ombra);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .riga-utente:hover,
+  .riga-prenotazione:hover,
+  .notifica:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ombra-forte);
+  }
+
+  /* --- post: una colonna sola, larga quanto il contenuto delle altre schermate --- */
+  .contenuto.colonna-post {
+    display: block;
+  }
+
+  .colonna-post .post {
+    background: var(--bianco);
+    border-radius: var(--raggio-m);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-bottom: none;
+    box-shadow: var(--ombra);
+  }
+
+  .colonna-post .crea-post {
+    background: var(--bianco);
+    border-radius: var(--raggio-m);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    box-shadow: var(--ombra);
+  }
+
+  /* --- dettaglio campo: due colonne --- */
+  .campo-hero {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 26px 32px 0;
+  }
+
+  .campo-hero img {
+    height: 340px;
+    border-radius: var(--raggio-l);
+  }
+
+  .campo-hero .btn-indietro {
+    top: 42px;
+    left: 48px;
+  }
+
+  .campo-corpo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 40px;
+    align-items: start;
+  }
+
+  .campo-corpo h1,
+  .campo-corpo .indirizzo,
+  .campo-corpo .messaggio-errore {
+    grid-column: 1 / -1;
+  }
+
+  .barra-prenota {
+    max-width: 1120px;
+    margin: 0 auto;
+    border-radius: var(--raggio-l);
+    box-shadow: var(--ombra);
+  }
+
+  /* --- mappa piu' generosa --- */
+  .mappa {
+    height: 320px;
+  }
+
+  .foglio {
+    margin-top: 0;
+    border-radius: 0;
+    padding-top: 28px;
+    background: transparent;
+  }
+
+  .foglio::before {
+    display: none;
+  }
+
+  .foglio h2 {
+    text-align: left;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  /* --- profilo --- */
+  .profilo-testa,
+  .profilo-azioni {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .dati-profilo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+
+  .dati-profilo .voce,
+  .voce-link {
+    background: var(--bianco);
+    border-radius: var(--raggio-m);
+    box-shadow: var(--ombra);
+    padding: 16px 18px;
+    border-bottom: none;
+  }
+
+  /* --- autenticazione: scheda ancorata in alto --- */
+  .app.auth {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    /* Ancorata in alto e non centrata verticalmente: "Accedi" e "Registrati"
+       hanno un numero diverso di campi, quindi centrando il blocco il logo,
+       le due linguette e i campi si spostavano a ogni cambio di schermata.
+       Cosi' tutto cio' che le due schermate hanno in comune resta fermo. */
+    align-content: start;
+    justify-items: center;
+    padding: clamp(24px, 6vh, 64px) 20px 48px;
+  }
+
+  /* la larghezza fissa vale per il contenuto della scheda, non per le
+     finestre modali: sono a schermo intero e non vanno rimpicciolite */
+  .app.auth > *:not(.modale-sfondo):not(.accesso-admin) {
+    width: 400px;
+    max-width: 100%;
+  }
+
+  .app.auth .auth-logo {
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 20px;
+  }
+
+  /* Modifica profilo: su schermi larghi il modulo si apre su due colonne e
+     usa tutta la colonna del contenuto, invece di restare una striscia stretta
+     con meta' schermo vuoto. Ogni etichetta viaggia insieme al suo campo
+     (.voce-modulo), cosi' non finiscono in colonne diverse. */
+  .contenuto.modulo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+    align-items: start;
+    padding-top: 10px;
+  }
+
+  /* blocchi che restano a tutta larghezza: errori, gallerie e tasto Salva */
+  .contenuto.modulo > .voce-modulo.larga,
+  .contenuto.modulo > .messaggio-errore,
+  .contenuto.modulo > .btn {
+    grid-column: 1 / -1;
+  }
+
+  .contenuto.modulo .scelta-avatar,
+  .contenuto.modulo .scelta-sport {
+    max-width: none;
+  }
+
+  .contenuto.modulo .btn.larghezza-piena {
+    justify-self: start;
+    min-width: 260px;
+    width: auto;
+  }
+
+  /* i due segmenti non devono stirarsi per tutta la pagina */
+  .segmenti {
+    max-width: 420px;
+  }
+
+  .app.senza-tabbar .navigazione {
+    display: flex;
+  }
+
+  /* --- swipe centrato --- */
+  .swipe-area,
+  .azioni-swipe {
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* schermi molto larghi: piu' respiro */
+@media (min-width: 1500px) {
+  .contenuto,
+  .foglio,
+  .campo-corpo,
+  .home-top,
+  .intestazione,
+  .campo-hero,
+  .barra-prenota,
+  .profilo-testa,
+  .profilo-azioni,
+  .dati-profilo,
+  .pagamento {
+    max-width: 1320px;
+  }
+}
+
+/* ============================================================
+   RIFINITURE: stati hover/focus e micro animazioni
+   ============================================================ */
+
+.card-sport,
+.card-campo {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .card-sport:hover,
+  .card-campo:hover {
+    transform: translateY(-3px);
+  }
+
+  .card-sport:hover {
+    box-shadow: var(--ombra-forte);
+  }
+
+  .btn:hover:not(:disabled),
+  .btn-pillola:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
+
+  .campanella:hover {
+    background: #eef4e4;
+  }
+}
+
+/* messa a fuoco visibile solo da tastiera */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(130, 202, 37, 0.55);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* la card sport legge meglio con una sfumatura al posto del bordo nero */
+.card-sport {
+  border: none;
+  box-shadow: var(--ombra);
+}
+
+.card-sport::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+}
+
+.card-sport span {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(4px);
+}
+
+.pillola-info {
+  display: inline-block;
+  background: rgba(130, 202, 37, 0.16);
+  color: #4b7d10;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+.pillola-info.chiara {
+  background: #f2f2f2;
+  color: var(--grigio);
+}
+
+.card-campo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+/* chi preferisce meno movimento non lo subisce */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   CHAT (dirette e di gruppo)
+   ============================================================ */
+
+.chat-pagina {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding-bottom: 0;
+}
+
+.intestazione-chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #ededed;
+  flex: none;
+}
+
+.chat-titolo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-titolo img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.chat-titolo > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat-titolo strong {
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-titolo em {
+  font-style: normal;
+  font-size: 12.5px;
+  color: var(--grigio);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-messaggi {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px var(--margine-lato) 8px;
+  background: #f7f8f5;
+}
+
+.chat-giorno {
+  text-align: center;
+  margin: 14px 0 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--grigio);
+}
+
+.bolla {
+  position: relative;
+  max-width: 78%;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 9px 13px 6px;
+  border-radius: 16px;
+  background: var(--bianco);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+.bolla.mia {
+  margin-left: auto;
+  background: rgba(130, 202, 37, 0.22);
+  border-bottom-right-radius: 5px;
+}
+
+.bolla.altrui {
+  border-bottom-left-radius: 5px;
+}
+
+.bolla .autore {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--verde-scuro);
+  margin-bottom: 2px;
+}
+
+.bolla p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.bolla time {
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+  font-size: 10.5px;
+  color: var(--grigio);
+}
+
+.chat-invio {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--margine-lato) calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--bianco);
+  border-top: 1px solid #ededed;
+}
+
+.chat-invio input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  outline: none;
+  border-radius: 100px;
+  background: var(--lilla);
+  font-size: 14px;
+}
+
+.chat-invio button {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--verde);
+  color: #0f2409;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.chat-invio button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* tasto per allegare una propria prenotazione: e' un'azione secondaria,
+   quindi resta chiaro e non verde come quello di invio */
+.chat-invio .chat-allega {
+  background: var(--lilla);
+  color: var(--testo);
+}
+
+/* ============================================================
+   INVITO A UNA PRENOTAZIONE DENTRO LA CHAT
+   Un messaggio con una prenotazione allegata: scheda + risposta.
+   ============================================================ */
+
+.bolla.con-invito {
+  max-width: 92%;
+  width: 300px;
+}
+
+.invito-chat {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid #e6e6e6;
+}
+
+.invito-chat.spento {
+  background: #f4f4f4;
+  color: var(--grigio);
+}
+
+.invito-scheda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.invito-scheda img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex: none;
+}
+
+.invito-testo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.invito-testo strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.invito-testo em {
+  font-style: normal;
+  font-size: 12.5px;
+  color: var(--grigio);
+}
+
+.invito-testo small {
+  font-size: 12px;
+  color: var(--verde-scuro);
+  font-weight: 600;
+}
+
+.invito-testo small.pieno {
+  color: #a02015;
+}
+
+.invito-esito {
+  display: block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--grigio);
+}
+
+.invito-esito.ok {
+  color: var(--verde-scuro);
+}
+
+.invito-azioni {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.invito-azioni .btn-pillola {
+  padding: 8px 16px;
+  font-size: 13px;
+  min-width: 0;
+}
+
+/* elenco delle proprie prenotazioni da mandare in chat */
+.elenco-prenotazioni button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.elenco-prenotazioni button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.elenco-prenotazioni img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex: none;
+}
+
+.elenco-prenotazioni span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.elenco-prenotazioni strong {
+  font-size: 14.5px;
+}
+
+.elenco-prenotazioni em {
+  font-style: normal;
+  font-size: 12.5px;
+  color: var(--grigio);
+}
+
+/* ------------------ righe della lista conversazioni ------------------ */
+
+.riga-chat .nome {
+  display: block;
+}
+
+.riga-chat .nome p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.riga-chat .quando {
+  flex: none;
+  align-self: flex-start;
+  padding-top: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--grigio);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   MODIFICA PROFILO: scelte visuali di avatar e sport
+   ============================================================ */
+
+/* Ogni voce del modulo tiene insieme etichetta, aiuto e campo: su telefono e'
+   un normale blocco impilato, su desktop diventa la cella di una griglia a due
+   colonne (vedi l'adattamento desktop in fondo al file). */
+.voce-modulo {
+  min-width: 0;
+}
+
+.aiuto {
+  margin: -2px 0 10px 4px;
+  font-size: 12.5px;
+  color: var(--grigio);
+}
+
+.campo-testo {
+  height: auto;
+  padding: 12px 18px;
+}
+
+.campo-testo textarea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  resize: vertical;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.larghezza-piena {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.scelta-avatar {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+}
+
+.avatar-opzione {
+  flex: none;
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.avatar-opzione.scelto {
+  border-color: var(--verde);
+}
+
+.avatar-opzione img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* apre la galleria del telefono o il file system del computer */
+.avatar-carica {
+  width: 56px;
+  height: 56px;
+  border: 1.5px dashed var(--verde);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: var(--verde-scuro);
+  background: rgba(130, 202, 37, 0.1);
+  line-height: 1;
+}
+
+.avatar-carica span {
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.avatar-carica:active {
+  transform: scale(0.96);
+}
+
+.selettore-file {
+  display: none;
+}
+
+/* gli sport preferiti si scelgono dalle immagini, non si scrivono */
+.scelta-sport {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sport-opzione {
+  position: relative;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--raggio-s);
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  height: 78px;
+  transition: transform 0.12s ease, border-color 0.15s ease;
+}
+
+.sport-opzione img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.72);
+  transition: filter 0.15s ease;
+}
+
+.sport-opzione > span:not(.spunta) {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 6px 8px;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.sport-opzione .spunta {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--verde);
+  color: #0f2409;
+  font-size: 13px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.sport-opzione.scelto {
+  border-color: var(--verde);
+}
+
+.sport-opzione.scelto img {
+  filter: brightness(0.92);
+}
+
+.sport-opzione:active {
+  transform: scale(0.97);
+}
+
+/* ------------------------- adattamenti desktop ------------------------ */
+
+@media (min-width: 900px) {
+  /* la chat usa la colonna accanto alla barra laterale, non tutto lo schermo */
+  /* l'intestazione della chat non va centrata: deve occupare tutta la colonna */
+  .chat-pagina .intestazione-chat {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  .app.chat-pagina {
+    max-width: 900px;
+    padding-bottom: 0;
+    height: 100vh;
+    height: 100dvh;
+    border-right: 1px solid #e9e9e9;
+    background: var(--bianco);
+  }
+
+  .chat-messaggi {
+    background: var(--bianco);
+  }
+
+  .bolla {
+    max-width: 62%;
+  }
+
+  /* le sezioni di notifiche restano a piena larghezza e le righe su piu' colonne */
+  .contenuto > .sezione-notifiche,
+  .contenuto > .riepilogo-notifiche {
+    grid-column: 1 / -1;
+  }
+
+  .sezione-notifiche .notifica {
+    box-shadow: var(--ombra);
+    border-color: transparent;
+  }
+
+  .profilo-azioni {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+/* ============================================================
+   ADATTAMENTO AI TELEFONI (in particolare iPhone)
+   Il layout non e' costruito su una risoluzione fissa: qui stanno le
+   correzioni che servono quando lo schermo e' piccolo, stretto o basso.
+   ============================================================ */
+
+/* Safari su iPhone ingrandisce automaticamente la pagina quando si tocca un
+   campo di testo con carattere sotto i 16px: il layout "salta" e gli elementi
+   sembrano uscire dallo schermo. Sui telefoni tutti i campi partono da 16px
+   (sopra i 900px restano le misure del design). */
+@media (max-width: 899px) {
+  .barra-ricerca input,
+  .campo input,
+  .campo select,
+  .campo-testo textarea,
+  .gruppo-campo input,
+  .gruppo-campo select,
+  .crea-post input,
+  .chat-invio input,
+  .allega-prenotazione select {
+    font-size: 16px;
+  }
+
+  /* i contenitori crescono di conseguenza, cosi' il testo non viene tagliato */
+  .allega-prenotazione select {
+    height: 40px;
+  }
+
+  .crea-post input {
+    height: 44px;
+  }
+}
+
+/* Le righe con foto + testo + orario: il testo si stringe, non spinge fuori
+   l'ultimo elemento. */
+.riga-prenotazione > *:not(img),
+.notifica .testo,
+.metodo-testo,
+.post-prenotazione-testo {
+  min-width: 0;
+}
+
+/* Schermi stretti (iPhone SE e simili): si guadagna spazio riducendo i
+   margini laterali e le spaziature piu' generose. */
+@media (max-width: 380px) {
+  :root {
+    --margine-lato: max(12px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  }
+
+  .riga-utente {
+    gap: 12px;
+  }
+
+  .azioni-swipe {
+    gap: 20px;
+  }
+
+  .azioni-swipe button {
+    width: 56px;
+    height: 56px;
+  }
+
+  .tab {
+    padding: 6px 4px;
+  }
+}
+
+/* Telefono in orizzontale: lo schermo e' basso, le fasce fisse vanno ridotte
+   altrimenti del contenuto non resta quasi nulla. */
+@media (max-height: 460px) and (orientation: landscape) and (max-width: 899px) {
+  :root {
+    --altezza-tabbar: 50px;
+  }
+
+  .mappa {
+    height: 46vh;
+  }
+
+  .auth-logo {
+    width: 40%;
+    margin: 14px auto 2px;
+  }
+
+  .campo-hero img {
+    height: 60vh;
+  }
+}
+
+/* Tablet e telefoni grandi in orizzontale (sotto la soglia desktop): la
+   colonna dei contenuti resta larga 460px, quindi anche la barra in basso si
+   ferma li' invece di stirarsi da un bordo all'altro. */
+@media (min-width: 560px) and (max-width: 899px) {
+  .navigazione {
+    max-width: 460px;
+    margin: 0 auto;
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+    border-radius: 18px 18px 0 0;
+  }
+}
+
+
+/* ============================================================
+   METODI DI PAGAMENTO (schermata del profilo)
+   ============================================================ */
+
+/* Colonna singola allineata a sinistra: questa schermata e' un elenco, non un
+   modulo a due colonne come "Modifica profilo". */
+.contenuto.colonna-pagamenti {
+  display: block;
+}
+
+.contenuto.colonna-pagamenti > * {
+  max-width: 660px;
+}
+
+.elenco-carte {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.contenuto.colonna-pagamenti > .btn-aggiungi-carta {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+}
+
+.nota-pagamenti {
+  margin: 22px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--raggio-s);
+  background: #f4f6f2;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--grigio);
+}
+
+.carta-salvata {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid #e4e4e4;
+  border-radius: var(--raggio-m);
+  background: var(--bianco);
+}
+
+/* la carta predefinita si riconosce a colpo d'occhio */
+.carta-salvata.predefinita {
+  border-color: var(--verde);
+  background: rgba(130, 202, 37, 0.07);
+}
+
+.carta-icona {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--lilla);
+  color: #1c1c1c;
+}
+
+.carta-testo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.carta-testo strong {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 15.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.carta-testo em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--testo-morbido);
+}
+
+.carta-testo small {
+  font-size: 12.5px;
+  color: var(--grigio);
+}
+
+.carta-azioni {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: none;
+}
+
+.carta-azioni .btn-testo {
+  padding: 4px 0 4px 10px;
+  font-size: 13px;
+  text-align: right;
+}
+
+.btn-testo.pericolo {
+  color: var(--rosso);
+}
+
+/* --- modulo di aggiunta / modifica --- */
+
+.modulo-carta {
+  border: 1px solid #e4e4e4;
+  border-radius: var(--raggio-m);
+  padding: 16px 18px 18px;
+  background: var(--bianco);
+  margin-bottom: 18px;
+}
+
+.modulo-carta h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modulo-carta .campo input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.4px;
+}
+
+/* il CVV e' corto: il campo non deve occupare tutta la riga */
+.campo-cvv {
+  max-width: 140px;
+}
+
+.scadenza-carta {
+  display: flex;
+  gap: 12px;
+}
+
+.scadenza-carta .campo {
+  flex: 1;
+  min-width: 0;
+}
+
+/* la voce che porta alla gestione delle carte nella schermata di pagamento */
+.metodo.chiaro .freccia {
+  margin-left: auto;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--grigio);
+}
+
+/* su schermi stretti i comandi della carta vanno sotto, non a lato */
+@media (max-width: 460px) {
+  .carta-salvata {
+    flex-wrap: wrap;
+  }
+
+  .carta-azioni {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    width: 100%;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 6px;
+  }
+
+  .carta-azioni .btn-testo {
+    padding: 4px 8px;
+  }
+}
+
+
+/* ============================================================
+   BARRA DI RICERCA DELLE SEZIONI (Post, Prenotazioni, Notifiche)
+   Stessa barra usata in Home e in Amici, sotto al titolo di sezione.
+   ============================================================ */
+
+.ricerca-sezione {
+  padding: 0 var(--margine-lato) 12px;
+  background: var(--bianco);
+}
+
+@media (min-width: 900px) {
+  .ricerca-sezione {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 32px 16px;
+    background: transparent;
+  }
+
+  .ricerca-sezione .barra-ricerca {
+    max-width: 460px;
+  }
+
+}
+
+@media (min-width: 1500px) {
+  .ricerca-sezione {
+    max-width: 1320px;
+  }
+
+}
+
+/* ============================================================
+   ACCOUNT DI PROVA: spiegazione al posto delle credenziali in chiaro
+   ============================================================ */
+
+
+
+/* ============================================================
+   SALDO SPORTEASY
+   ============================================================ */
+
+.saldo-sporteasy {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 18px var(--margine-lato) 0;
+  padding: 16px 18px;
+  border-radius: var(--raggio-m);
+  background: var(--gradiente);
+  color: #10250a;
+  box-shadow: var(--ombra);
+}
+
+.saldo-icona {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.saldo-testo {
+  display: flex;
+  flex-direction: column;
+}
+
+.saldo-testo small {
+  font-size: 12.5px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.saldo-testo strong {
+  font-family: Poppins, Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.saldo-nota {
+  grid-column: 2;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* il saldo come metodo di pagamento */
+.metodo.saldo.scelto {
+  border-color: var(--verde);
+  background: rgba(130, 202, 37, 0.14);
+}
+
+/* ============================================================
+   POST: prenotazione allegata non piu' disponibile
+   ============================================================ */
+
+.post-prenotazione.spenta {
+  background: #f4f4f4;
+  border-color: #e4e4e4;
+  color: var(--grigio);
+  cursor: default;
+}
+
+.post-prenotazione.spenta .post-prenotazione-icona {
+  background: #e8e8e8;
+  color: #8a8a8a;
+}
+
+.post-prenotazione.spenta .post-prenotazione-testo strong {
+  color: #4a4a4a;
+}
+
+@media (min-width: 900px) {
+  /* 1120px meno i 32px di padding laterale delle altre sezioni del profilo:
+     cosi' il riquadro e' allineato alle schede dei dati sotto */
+  .saldo-sporteasy {
+    max-width: 1056px;
+    margin: 22px auto 0;
+  }
+}
+
+@media (min-width: 1500px) {
+  .saldo-sporteasy {
+    max-width: 1256px;
+  }
+}
+
+
+/* ============================================================
+   INTESTAZIONI SENZA FRECCIA: adattamento a tablet e desktop
+   Va dopo il blocco desktop generale, che imposta tre colonne
+   (44px per la freccia): senza freccia quello spazio non serve.
+   ============================================================ */
+
+@media (min-width: 900px) {
+  .intestazione-sinistra {
+    grid-template-columns: 1fr auto;
+  }
+
+  .intestazione-centrata {
+    grid-template-columns: 1fr;
+  }
+
+  .intestazione-centrata h1 {
+    text-align: center;
+  }
+}
+
+
+/* ============================================================
+   SALDO NELLA BARRA LATERALE
+   Compare solo dove la navigazione e' una colonna (da 900px in su):
+   nella barra inferiore del telefono non c'e' spazio, e li' il saldo
+   resta comunque in cima al Profilo.
+   ============================================================ */
+
+.nav-saldo {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .nav-saldo {
+    display: flex;
+    align-items: center;
+    /* le schermate di esito centrano tutto il loro testo: il saldo resta
+       allineato a sinistra come nelle altre pagine */
+    text-align: left;
+    gap: 10px;
+    margin: auto 0 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(130, 202, 37, 0.16);
+    color: #3f6b0d;
+  }
+
+  .nav-saldo svg {
+    flex: none;
+  }
+
+  .nav-saldo span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .nav-saldo small {
+    font-size: 11.5px;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  .nav-saldo strong {
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* con il saldo sopra, e' lui a spingere il profilo in fondo */
+  .nav-saldo + .tab-profilo {
+    margin-top: 0;
+  }
+}
+
+/* ============================================================
+   PRENOTAZIONI APERTE NEL PROFILO DI UN'ALTRA PERSONA
+   ============================================================ */
+
+.prenotazioni-utente {
+  margin-top: 22px;
+}
+
+.prenotazioni-utente h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.prenotazioni-utente .aiuto {
+  margin-left: 0;
+}
+
+.riga-prenotazione .partecipa {
+  flex: none;
+  align-self: center;
+}
+
+
+/* ============================================================
+   RIFINITURE MODIFICA 10
+   ============================================================ */
+
+/* la scritta del limite partecipanti era attaccata al contatore sopra */
+.aiuto-staccato {
+  margin-top: 12px;
+}
+
+/* ============================================================
+   RICHIESTE DI AMICIZIA E CREAZIONE GRUPPI
+   ============================================================ */
+
+/* quantita' di richieste in attesa, sulla linguetta */
+.pallino-conteggio {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 100px;
+  background: var(--verde);
+  color: #10250a;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: 1px;
+}
+
+.riga-richiesta .nome h3 a {
+  text-decoration: none;
+}
+
+.azioni-richiesta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+
+.azioni-richiesta .btn-pillola {
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+.azioni-richiesta .btn-testo {
+  padding: 2px 6px;
+  font-size: 12.5px;
+}
+
+/* --- prenotazione da completare ---
+   Quelle rimaste "in attesa" non sono mai state pagate: la riga diventa un
+   collegamento che riporta alla schermata di pagamento. */
+.riga-prenotazione .riga-riprendi {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.riprendi-nota {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #8a6100;
+}
+
+/* le due azioni di una prenotazione propria (invita / annulla), impilate
+   sulla destra della riga come nelle richieste di amicizia */
+.azioni-prenotazione {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+
+.azioni-prenotazione .btn-testo {
+  padding: 2px 6px;
+  font-size: 12.5px;
+}
+
+/* --- riga di un gruppo ---
+   La riga apre la chat come le altre; per i gruppi creati dall'utente resta
+   sulla destra il tasto per eliminarli, fuori dal collegamento. */
+.riga-gruppo .gruppo-apri {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.riga-gruppo > .btn-testo {
+  flex: none;
+  padding: 2px 6px;
+  font-size: 12.5px;
+}
+
+.btn-nuovo-gruppo {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  margin-bottom: 8px;
+}
+
+/* --- modulo di creazione del gruppo --- */
+
+.modulo-gruppo .scelta-avatar {
+  margin-bottom: 6px;
+}
+
+.modulo-gruppo .aiuto {
+  margin-left: 0;
+}
+
+/* elenco degli amici da spuntare */
+.scelta-membri {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 4px;
+}
+
+.scelta-membri li > label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.scelta-membri li > label > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.scelta-membri input[type='checkbox'] {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--verde);
+}
+
+/* --- esito dello swipe --- */
+
+.avviso-swipe {
+  font-weight: 700;
+  color: #3f6b0d;
+}
+
+@media (max-width: 460px) {
+  .azioni-richiesta {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+/* ============================================================
+   ACCESSO AMMINISTRATORE (angolo della schermata "Accedi")
+   Volutamente piu' piccolo e sobrio del modulo principale: e' un percorso
+   di servizio, non l'ingresso normale al sito.
+   ============================================================ */
+
+.accesso-admin {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  width: min(230px, calc(100% - 20px));
+  text-align: right;
+}
+
+.accesso-admin .apri-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #e2e5de;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--grigio, #717171);
+  cursor: pointer;
+}
+
+.accesso-admin .apri-admin:hover {
+  color: var(--testo, #14170f);
+  border-color: #cfd6c8;
+}
+
+.accesso-admin .scheda-admin {
+  text-align: left;
+  background: var(--bianco, #fff);
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 12px 13px 13px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.accesso-admin .testa-admin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.accesso-admin .titolo-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--grigio, #717171);
+  text-transform: uppercase;
+}
+
+.accesso-admin .chiudi-admin {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--grigio, #717171);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.accesso-admin label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--grigio, #717171);
+}
+
+.accesso-admin input {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dcdfd8;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--testo, #14170f);
+  background: #fff;
+  outline: none;
+  width: 100%;
+}
+
+.accesso-admin input:focus { border-color: var(--verde, #82ca25); }
+
+.accesso-admin .entra-admin {
+  margin-top: 2px;
+  height: 34px;
+  border: none;
+  border-radius: 9px;
+  background: #14170f;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accesso-admin .entra-admin:hover { filter: brightness(1.15); }
+.accesso-admin .entra-admin:disabled { opacity: 0.6; cursor: default; }
+
+.accesso-admin .errore-admin {
+  margin: 0;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #ffe0dd;
+  color: #a02015;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (min-width: 900px) {
+  .accesso-admin {
+    top: 18px;
+    right: 22px;
+    width: 250px;
+  }
+}
+
+/* ============================================================
+   SWIPE: barra di ricerca e richieste in attesa
+   ============================================================ */
+
+/* La barra della schermata Swipe sta al centro della pagina, con la stessa
+   larghezza della carta: su desktop la fascia .home-top e' larga quanto tutto
+   il contenuto, quindi senza questo la barra resterebbe schiacciata a sinistra
+   mentre la carta e' al centro. */
+.home-top-centrata {
+  justify-content: center;
+}
+
+.home-top-centrata .barra-ricerca {
+  flex: 1;
+  max-width: 460px;
+}
+
+/* "Richiesta inviata" con accanto il modo per annullarla */
+.richiesta-in-attesa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.richiesta-in-attesa .btn-testo {
+  font-size: 13px;
+}
+
+/* I risultati della ricerca stanno nella stessa colonna centrata della barra
+   e della carta: su desktop, senza questo, si allineerebbero a sinistra
+   mentre tutto il resto della schermata Swipe e' al centro. */
+.risultati-persone {
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
